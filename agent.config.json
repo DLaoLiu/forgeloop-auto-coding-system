@@ -1,0 +1,14 @@
+{
+  "workspace": ".generated/openclaw-skill-store",
+  "requirement": "requirements/openclaw-skill-store.md",
+  "maxIterations": 12,
+  "maxTaskAttempts": 3,
+  "model": null,
+  "allowedCommands": ["node", "npm", "npx"],
+  "globalVerification": [
+    {
+      "command": "node",
+      "args": ["tests/validate.mjs", "--all"]
+    }
+  ]
+}

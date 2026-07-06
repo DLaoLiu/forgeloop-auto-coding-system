@@ -17,6 +17,12 @@
 /.next/
 /out/
 
+# Workspaces created and modified by the autonomous coding loop.
+/.generated/
+
+# Local runner state. Sanitized evidence is copied into automation-logs/.
+/.agent-local/
+
 # production
 /build
 

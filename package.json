@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "agent:bootstrap": "node agent-system/bootstrap.mjs",
+    "agent:run": "node agent-system/run-loop.mjs",
+    "agent:status": "node agent-system/status.mjs",
+    "agent:sync": "node agent-system/sync-evidence.mjs"
   },
   "dependencies": {
     "@streamdown/cjk": "^1.0.3",
