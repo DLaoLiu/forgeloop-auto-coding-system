@@ -23,7 +23,10 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      # npm 10 on the Linux runner rejects npm 11 lockfiles that contain
+      # platform-specific Tailwind WASM peers. npm install resolves only the
+      # runner-relevant optional tree while keeping declared versions locked.
+      - run: npm install --no-audit --no-fund
       - run: npm run lint
       - run: npm run build
         env:
