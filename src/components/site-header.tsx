@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 
 const nav = [
   { href: "/", label: "自主开发系统", icon: Workflow },
-  { href: "/store", label: "Skill 商店", icon: Store },
+  { href: "/store", label: "生成应用", icon: Store },
   { href: "/architecture", label: "系统说明", icon: Braces },
 ];
 
@@ -63,7 +63,7 @@ export function SiteHeader() {
 
         <a
           className="flex items-center gap-2 rounded-md border border-slate-200 bg-white px-2.5 py-2 text-xs font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
-          href="https://github.com/DLaoLiu/forgeloop-openclaw-store"
+          href="https://github.com/DLaoLiu/forgeloop-auto-coding-system"
           rel="noreferrer"
           target="_blank"
           title="查看 GitHub 源码"

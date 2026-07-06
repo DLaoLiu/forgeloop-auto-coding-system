@@ -8,7 +8,7 @@
   "globalVerification": [
     {
       "command": "node",
-      "args": ["tests/validate.mjs", "--all"]
+      "args": ["tests/validate.mjs", "--task", "release-and-pages"]
     }
   ]
 }

@@ -48,7 +48,7 @@ export default function ArchitecturePage() {
                 href="/"
               >
                 <PlayCircle className="size-4" />
-                运行自主开发
+                查看真实运行
               </Link>
               <Link
                 className="inline-flex items-center gap-2 rounded-md border border-white/15 px-4 py-2.5 text-xs font-bold text-white hover:bg-white/5"
@@ -100,8 +100,9 @@ export default function ArchitecturePage() {
                 </p>
                 <h2 className="mt-2 text-2xl font-bold">架构边界</h2>
                 <p className="mt-3 text-xs leading-6 text-slate-500">
-                  公共 Demo 使用确定性模型适配器，确保无密钥也能复现完整流程。生产环境只需替换
-                  Model Adapter，编排、安全与审计逻辑保持不变。
+                  控制器通过已登录的 Codex CLI 执行非交互式 Agent
+                  回合。模型运行在受限工作区中；任务选择、白名单验证、重试上限、Git
+                  提交和事件证据由外层控制器掌握。
                 </p>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
@@ -111,7 +112,7 @@ export default function ArchitecturePage() {
                     "Orchestrator",
                     "维护任务图、状态迁移、重试与中断恢复。",
                   ],
-                  [Bot, "Model Adapter", "封装模型调用；公共 Demo 无需 API Key。"],
+                  [Bot, "Codex CLI Adapter", "以 JSONL 事件流执行隔离的编码回合。"],
                   [
                     ShieldCheck,
                     "Policy Engine",
@@ -151,10 +152,10 @@ export default function ArchitecturePage() {
               </h2>
               <div className="mt-5 space-y-3">
                 {[
-                  "工具调用失败：指数退避，最多重试 2 次",
-                  "测试失败：将错误和差异交给 Builder 定向修复",
+                  "Agent 回合失败：保留 stderr/JSONL，受最大尝试次数约束",
+                  "测试失败：把控制器验证输出交回 Codex 定向修复",
                   "需求歧义：暂停任务并向工程师提出最小问题",
-                  "发布失败：保留构建产物并回滚到上个稳定版本",
+                  "发布门禁：浏览器验收和远程写入由工程师确认",
                 ].map((item) => (
                   <p
                     className="flex items-start gap-2 text-[11px] leading-5 text-slate-600"
@@ -188,10 +189,10 @@ export default function ArchitecturePage() {
               <div>
                 <p className="flex items-center gap-2 text-xs font-bold">
                   <Boxes className="size-4 text-[#e6673f]" />
-                  两个 Demo，共享同一仓库与部署流水线
+                  两个独立仓库，保留系统与生成应用的因果链
                 </p>
                 <p className="mt-2 text-[10px] text-slate-500">
-                  自主开发控制台负责过程，Skill 商店负责业务结果。
+                  系统仓库包含控制器与运行证据；生成仓库包含独立任务、测试和提交历史。
                 </p>
               </div>
               <Link

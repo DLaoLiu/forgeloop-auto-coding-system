@@ -90,6 +90,10 @@ while (iteration < maxIterations) {
     title: task.title,
     attempt: task.attempts,
   });
+  console.log(
+    `\n[${plan.tasks.filter((candidate) => candidate.passes).length + 1}/${plan.tasks.length}] `
+      + `${task.id} · attempt ${task.attempts}`,
+  );
 
   const recentProgress = (await readFile(progressPath, "utf8")).slice(-6000);
   const previousFailure = task.lastFailure || "No previous failure.";
@@ -135,6 +139,11 @@ Execution rules:
     stdoutFile: path.join(attemptDirectory, "codex-events.jsonl"),
     stderrFile: path.join(attemptDirectory, "codex.stderr.log"),
   });
+  console.log(
+    codexResult.code === 0
+      ? "Agent turn completed; running controller verification."
+      : `Agent turn exited with code ${codexResult.code}; verification evidence follows.`,
+  );
 
   if (await exists(approvalPath)) {
     terminalStatus = "waiting-for-approval";

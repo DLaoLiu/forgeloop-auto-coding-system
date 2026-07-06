@@ -1,114 +1,92 @@
-# ForgeLoop — AI 自主开发系统 × OpenClaw Skill 商店
+# ForgeLoop Auto-Coding System
 
-本仓库包含两个可运行的交付物：
+ForgeLoop 是一个可执行的 AI 自主开发循环。它先把产品需求交给 Codex CLI
+生成架构和任务图，再逐个执行未通过任务；每次 Agent 回合结束后，外层控制器独立运行
+白名单验证命令，失败则保留证据并进入下一次修复回合，通过后才创建 Git 提交。
 
-1. **ForgeLoop AI 自主开发系统 Demo**：从需求、架构、编码、测试、安全审查到发布的完整闭环，支持工程师在高风险节点审批或退回修复。
-2. **OpenClaw Skill 线上商店 Demo**：支持搜索、分类筛选、Skill 详情、`SKILL.md` 查看、权限审查和模拟安装。
+本仓库是自动开发系统；它生成的 OpenClaw Skill Store 位于独立仓库：
 
-在线访问：<https://dlaoliu.github.io/forgeloop-openclaw-store/>
+- 自动开发系统：<https://github.com/DLaoLiu/forgeloop-auto-coding-system>
+- 生成应用：<https://github.com/DLaoLiu/forgeloop-openclaw-store>
+- 生成应用 Pages：<https://dlaoliu.github.io/forgeloop-openclaw-store/>
 
-## 为什么这样设计
-
-GitHub Pages 是纯静态托管环境，不能安全保存模型密钥。公开 Demo 因此使用确定性 Model Adapter 来复现完整代理状态机；模型层与 Orchestrator、Policy Engine、Event Store 解耦，生产实现可替换为任意 LLM Provider，而无需修改执行和安全逻辑。
-
-这避免了把 API Key 放进浏览器，同时保证评审者无需配置账号即可运行全部交互。
-
-## 自主开发闭环
+## 真实执行链
 
 ```text
-需求输入
+产品需求
   ↓
-Discover → Architect → Build → Verify → Approve → Release
-                 ↖──── 失败自动修复 ────┘
-                                      ↓
-                            GitHub Pages 生产发布
+Codex bootstrap → architecture.md + task.json
+  ↓
+选择第一个 passes=false 的任务
+  ↓
+Codex CLI 修改文件并自测
+  ↓
+控制器独立验证 ──失败──→ 记录错误并进入修复回合
+  ↓通过
+Git 提交 + progress.txt + events.jsonl
+  ↓
+全部任务完成 → 全局验证 → 可部署产物
 ```
 
-- **Discover**：抽取用户故事、约束与验收标准
-- **Architect**：生成架构、任务依赖图与风险边界
-- **Build**：执行代码变更并生成产物
-- **Verify**：运行类型检查、静态分析、构建和关键流程验证
-- **Approve**：外部写操作或权限升级时请求工程师确认
-- **Release**：创建版本、部署并回写访问地址
+公开看板只渲染 `src/lib/run-evidence.json` 中同步的真实运行证据，不在浏览器里用
+计时器模拟 Agent。
 
-## 技术栈
+## 运行
 
-- Next.js 16 / React 19 / TypeScript
-- Tailwind CSS 4 / shadcn/ui
-- AI Elements `MessageResponse`（Agent Markdown 输出）
-- GitHub Actions / GitHub Pages
+前置条件：
 
-## 本地运行
+- Node.js 20+
+- 已安装并登录 Codex CLI；本项目默认使用 Codex.app 内置 CLI，也可设置
+  `CODEX_BIN`
+- Git
 
 ```bash
 npm install
-npm run dev
+npm run agent:bootstrap
+npm run agent:run
+npm run agent:status
+npm run agent:sync
 ```
 
-打开 <http://localhost:3000>：
+- `agent:bootstrap`：在配置的空工作区中生成架构和任务图
+- `agent:run`：运行编码、验证、修复和提交循环
+- `agent:status`：显示任务、尝试次数和提交
+- `agent:sync`：把运行摘要、事件、任务和进度同步到在线看板
 
-- `/` — AI 自主开发控制台
-- `/store` — OpenClaw Skill 商店
-- `/architecture` — 系统架构与安全说明
+原始 Codex JSONL、stderr 和每次验证结果位于生成仓库 `.agent/logs/`。终端默认只输出
+任务摘要，完整事件仍会落盘。
 
-## 质量检查
+## 控制边界
+
+- Codex 使用 `workspace-write` 沙箱，不启用绕过审批模式
+- 控制器只执行 `agent.config.json` 中允许的验证命令
+- Agent 不能修改任务通过状态或执行 Git 提交
+- 每个任务和整个循环都有硬性次数上限
+- 需求决策或不安全外部操作可通过 `.agent/approval-request.json` 暂停
+- 远程推送、Pages 发布和通知邮件由工程师授权
+
+## 项目结构
+
+```text
+agent-system/
+  bootstrap.mjs       # 生成架构和任务图
+  run-loop.mjs        # 自主编码、验证、修复、提交循环
+  status.mjs          # 任务状态
+  sync-evidence.mjs   # 同步在线看板证据
+requirements/
+  openclaw-skill-store.md
+automation-logs/latest/
+src/
+  app/                # 静态证据看板
+  lib/run-evidence.json
+agent.config.json
+```
+
+## 系统站点
 
 ```bash
 npm run lint
 npm run build
 ```
 
-`next.config.ts` 使用静态导出，生产文件生成到 `out/`。
-
-## GitHub Pages 部署
-
-仓库包含 `.github/workflows/deploy-pages.yml`。推送 `main` 后会自动：
-
-1. 安装依赖
-2. 执行 ESLint
-3. 构建静态产物
-4. 发布到 GitHub Pages
-
-首次部署前需要在 GitHub 仓库 **Settings → Pages → Build and deployment** 中选择 **GitHub Actions**。
-
-## OpenClaw 兼容性
-
-Skill 数据遵循 OpenClaw 官方约定：
-
-- 每个 Skill 以 `SKILL.md` 为核心
-- Frontmatter 包含 `name`、`description`、`version`
-- `metadata.openclaw` 声明运行信息
-- 安装前展示权限清单和安全状态
-- 第三方 Skill 默认视为不可信代码
-
-参考：
-
-- [OpenClaw Skill Format](https://docs.openclaw.ai/clawhub/skill-format)
-- [OpenClaw Skills Documentation](https://github.com/openclaw/openclaw/blob/main/docs/tools/skills.md)
-
-## 安全边界
-
-- 不在前端保存或传输模型 API Key
-- 外部发布属于审批操作
-- 安装前明确展示权限与来源
-- 敏感信息不进入 Agent 提示词或日志
-- 失败重试有上限，并保留可审计事件
-
-## 项目结构
-
-```text
-src/
-  app/
-    page.tsx                 # AI 自主开发系统
-    store/page.tsx           # Skill 商店
-    architecture/page.tsx    # 架构说明
-  components/
-    autonomy-studio.tsx      # 代理编排与 HITL UI
-    skill-store.tsx          # 商店完整交互
-    ai-elements/message.tsx  # AI Markdown 渲染
-  lib/
-    autonomy.ts              # 工作流定义
-    skills.ts                # Skill 数据与 manifest
-.github/workflows/
-  deploy-pages.yml
-```
+Next.js 使用静态导出，GitHub Actions 将 `out/` 发布到 GitHub Pages。

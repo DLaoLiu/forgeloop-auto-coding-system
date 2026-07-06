@@ -1,0 +1,20 @@
+{"at":"2026-07-06T12:21:54.617Z","type":"bootstrap.started","requirement":"requirements/openclaw-skill-store.md"}
+{"at":"2026-07-06T12:24:26.616Z","type":"bootstrap.completed","taskCount":7,"commit":"7b0a325"}
+{"at":"2026-07-06T12:24:45.991Z","type":"loop.started","maxIterations":12}
+{"at":"2026-07-06T12:24:45.993Z","type":"task.started","iteration":1,"taskId":"scaffold-and-validator","title":"Scaffold app and validator","attempt":1}
+{"at":"2026-07-06T12:28:38.457Z","type":"task.completed","iteration":1,"taskId":"scaffold-and-validator","attempt":1,"commit":"50b7d73","verification":[{"command":"node","args":["tests/validate.mjs","--task","scaffold-and-validator"],"exitCode":0}]}
+{"at":"2026-07-06T12:28:38.458Z","type":"task.started","iteration":2,"taskId":"catalog-and-visual-system","title":"Build catalog landing page","attempt":1}
+{"at":"2026-07-06T12:34:04.027Z","type":"task.completed","iteration":2,"taskId":"catalog-and-visual-system","attempt":1,"commit":"b63c425","verification":[{"command":"node","args":["tests/validate.mjs","--task","catalog-and-visual-system"],"exitCode":0}]}
+{"at":"2026-07-06T12:34:04.028Z","type":"task.started","iteration":3,"taskId":"search-and-category-filters","title":"Implement catalog discovery","attempt":1}
+{"at":"2026-07-06T12:36:41.867Z","type":"task.completed","iteration":3,"taskId":"search-and-category-filters","attempt":1,"commit":"ac01161","verification":[{"command":"node","args":["tests/validate.mjs","--task","search-and-category-filters"],"exitCode":0}]}
+{"at":"2026-07-06T12:36:41.868Z","type":"task.started","iteration":4,"taskId":"skill-detail-dialog","title":"Add skill detail dialog","attempt":1}
+{"at":"2026-07-06T12:40:30.388Z","type":"task.completed","iteration":4,"taskId":"skill-detail-dialog","attempt":1,"commit":"095facf","verification":[{"command":"node","args":["tests/validate.mjs","--task","skill-detail-dialog"],"exitCode":0}]}
+{"at":"2026-07-06T12:40:30.389Z","type":"task.started","iteration":5,"taskId":"secure-install-flow","title":"Implement secure installation","attempt":1}
+{"at":"2026-07-06T12:45:02.021Z","type":"task.completed","iteration":5,"taskId":"secure-install-flow","attempt":1,"commit":"7155810","verification":[{"command":"node","args":["tests/validate.mjs","--task","secure-install-flow"],"exitCode":0}]}
+{"at":"2026-07-06T12:45:02.022Z","type":"task.started","iteration":6,"taskId":"resilience-and-state-polish","title":"Harden responsive states","attempt":1}
+{"at":"2026-07-06T12:49:45.300Z","type":"task.completed","iteration":6,"taskId":"resilience-and-state-polish","attempt":1,"commit":"33ae850","verification":[{"command":"node","args":["tests/validate.mjs","--task","resilience-and-state-polish"],"exitCode":0}]}
+{"at":"2026-07-06T12:49:45.301Z","type":"task.started","iteration":7,"taskId":"release-and-pages","title":"Complete accessible release","attempt":1}
+{"at":"2026-07-06T13:04:48.000Z","type":"manual-gate.completed","taskId":"release-and-pages","checks":["detail URL refresh","secure install flow","localStorage reload persistence","375px overflow","reduced-motion contract"]}
+{"at":"2026-07-06T13:04:48.001Z","type":"task.completed","iteration":7,"taskId":"release-and-pages","attempt":1,"commit":"8ba6bbb","verification":[{"command":"node","args":["tests/validate.mjs","--task","release-and-pages"],"exitCode":0}]}
+{"at":"2026-07-06T13:04:48.002Z","type":"global-verification.completed","verification":[{"command":"node","args":["tests/validate.mjs","--task","release-and-pages"],"exitCode":0}]}
+{"at":"2026-07-06T13:04:48.003Z","type":"loop.finished","status":"completed","completedTasks":7,"totalTasks":7}

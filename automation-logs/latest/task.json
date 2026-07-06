@@ -1,0 +1,191 @@
+{
+  "project": "OpenClaw Skill Store",
+  "generatedAt": "2026-07-06T12:22:29Z",
+  "tasks": [
+    {
+      "id": "scaffold-and-validator",
+      "title": "Scaffold app and validator",
+      "description": "Create the dependency-free static application shell, module and asset directories, local preview server, and deterministic task-aware Node validation script.",
+      "acceptanceCriteria": [
+        "The repository contains index.html, styles.css, js/app.mjs, js/store.mjs, data/skills.json, tests/serve.mjs, tests/validate.mjs, and assets/openclaw-mark.svg.",
+        "The initial HTML uses semantic landmarks and stable DOM hooks without inline event-handler attributes or remote resources.",
+        "The preview server serves repository files with safe path handling and no third-party dependency.",
+        "The validator accepts --task scaffold-and-validator, exits zero for a valid scaffold, and exits nonzero for an unknown task ID."
+      ],
+      "verification": [
+        {
+          "command": "node",
+          "args": [
+            "tests/validate.mjs",
+            "--task",
+            "scaffold-and-validator"
+          ]
+        }
+      ],
+      "passes": true,
+      "attempts": 1,
+      "lastFailure": null,
+      "completedAt": "2026-07-06T12:28:38.327Z",
+      "commit": "50b7d73"
+    },
+    {
+      "id": "catalog-and-visual-system",
+      "title": "Build catalog landing page",
+      "description": "Define the realistic skill catalog and render a responsive marketplace landing page with local OpenClaw branding, metadata, loading state, and reusable visual tokens.",
+      "acceptanceCriteria": [
+        "data/skills.json contains at least eight schema-valid skills spanning at least four categories with unique slugs and complete detail, permission, security, command, and manifest fields.",
+        "The landing page renders each skill as a semantic card with name, author, category, summary, rating, downloads, security status, and installed-state hook.",
+        "The interface has a distinct OpenClaw identity using only local assets, CSS, and system fonts.",
+        "Loading and load-error states are clear, and the layout includes safeguards against horizontal overflow at 375px."
+      ],
+      "verification": [
+        {
+          "command": "node",
+          "args": [
+            "tests/validate.mjs",
+            "--task",
+            "catalog-and-visual-system"
+          ]
+        }
+      ],
+      "passes": true,
+      "attempts": 1,
+      "lastFailure": null,
+      "completedAt": "2026-07-06T12:34:03.900Z",
+      "commit": "b63c425"
+    },
+    {
+      "id": "search-and-category-filters",
+      "title": "Implement catalog discovery",
+      "description": "Implement deterministic search, category filtering, derived counts, result announcements, and the resettable empty state using pure functions and event listeners.",
+      "acceptanceCriteria": [
+        "Search is case-insensitive and matches skill name, author, slug, and description.",
+        "Category controls combine correctly with search, expose their selected state, and show derived category and visible-result counts.",
+        "A zero-result query displays a useful empty state with a working control that resets discovery state.",
+        "Pure discovery functions are importable in Node and covered for individual and combined search/filter cases."
+      ],
+      "verification": [
+        {
+          "command": "node",
+          "args": [
+            "tests/validate.mjs",
+            "--task",
+            "search-and-category-filters"
+          ]
+        }
+      ],
+      "passes": true,
+      "attempts": 1,
+      "lastFailure": null,
+      "completedAt": "2026-07-06T12:36:41.739Z",
+      "commit": "ac01161"
+    },
+    {
+      "id": "skill-detail-dialog",
+      "title": "Add skill detail dialog",
+      "description": "Implement URL-addressable skill details in an accessible native dialog, including complete metadata, description, permissions, security status, and SKILL.md manifest preview.",
+      "acceptanceCriteria": [
+        "Opening a card shows version, author, downloads, rating, update date, complete description, requested permissions, security/risk status, and the full manifest preview.",
+        "The selected skill is represented by ?skill=<slug>; refresh and browser back/forward restore or close the dialog without requiring a server rewrite.",
+        "The dialog has an accessible name, explicit close control, Escape handling, initial focus, and focus restoration to the invoking card.",
+        "Unknown or malformed skill query values recover to the catalog without an uncaught error."
+      ],
+      "verification": [
+        {
+          "command": "node",
+          "args": [
+            "tests/validate.mjs",
+            "--task",
+            "skill-detail-dialog"
+          ]
+        }
+      ],
+      "passes": true,
+      "attempts": 1,
+      "lastFailure": null,
+      "completedAt": "2026-07-06T12:40:30.240Z",
+      "commit": "095facf"
+    },
+    {
+      "id": "secure-install-flow",
+      "title": "Implement secure installation",
+      "description": "Build the staged security review, permission confirmation, install-command, and completion flow with idempotent localStorage persistence and installed catalog state.",
+      "acceptanceCriteria": [
+        "Installation progresses in order through security review, permission confirmation, install command, and completed state with visible current-step text.",
+        "The exact catalog install command is presented in a keyboard-accessible command region only after review and confirmation.",
+        "Completing installation persists a unique slug under the versioned localStorage key and updates both card and dialog installed states after reload.",
+        "Missing, malformed, duplicate, or unavailable localStorage data is handled without breaking catalog use.",
+        "The install dialog supports keyboard operation, Escape-to-close, accessible naming, and deterministic focus restoration."
+      ],
+      "verification": [
+        {
+          "command": "node",
+          "args": [
+            "tests/validate.mjs",
+            "--task",
+            "secure-install-flow"
+          ]
+        }
+      ],
+      "passes": true,
+      "attempts": 1,
+      "lastFailure": null,
+      "completedAt": "2026-07-06T12:45:01.893Z",
+      "commit": "7155810"
+    },
+    {
+      "id": "resilience-and-state-polish",
+      "title": "Harden responsive states",
+      "description": "Harden loading, error, URL, storage, empty, installed, and dialog behavior; finish narrow-screen styling and deterministic security checks across all shipped static files.",
+      "acceptanceCriteria": [
+        "Loading, data-load error, empty results, selected filters, installed skills, dialogs, and completed installation each have clear textual and visual states.",
+        "Long slugs, manifests, and install commands remain contained, and layout rules prevent document-level horizontal overflow at 375px.",
+        "Fetch, history, unknown-route, and storage failures degrade to a usable catalog or actionable message without uncaught application errors.",
+        "Shipped source and content contain no remote assets, external fonts, inline event handlers, API keys, credentials, or secret-like values."
+      ],
+      "verification": [
+        {
+          "command": "node",
+          "args": [
+            "tests/validate.mjs",
+            "--task",
+            "resilience-and-state-polish"
+          ]
+        }
+      ],
+      "passes": true,
+      "attempts": 1,
+      "lastFailure": null,
+      "completedAt": "2026-07-06T12:49:45.170Z",
+      "commit": "33ae850"
+    },
+    {
+      "id": "release-and-pages",
+      "title": "Complete accessible release",
+      "description": "Perform the final accessibility pass, add architecture and ForgeLoop provenance content, complete usage and deployment documentation, preserve progress and automation evidence, and configure validated GitHub Pages deployment.",
+      "acceptanceCriteria": [
+        "Landmarks, headings, labels, live status, keyboard operation, focus visibility and restoration, Escape behavior, non-color status cues, and reduced-motion support satisfy the documented accessibility contracts.",
+        "The application contains an architecture/provenance section naming ForgeLoop and linking to a non-placeholder HTTPS GitHub repository for the autonomous system.",
+        "README.md explains dependency-free local preview, task and full validation, GitHub Pages deployment, generated provenance, routes, storage, and accessibility behavior.",
+        "progress.txt and .agent/events.jsonl provide nonempty progress and automation evidence, and the implementation history consists of task-scoped commits created only after validation.",
+        ".github/workflows/pages.yml validates the release and deploys the static artifact on main or manual dispatch with least-privilege Pages permissions and deployment concurrency.",
+        "A documented manual pass confirms the complete keyboard install flow, refreshed detail URL, persisted installed state, reduced motion, and no horizontal overflow at 375px."
+      ],
+      "verification": [
+        {
+          "command": "node",
+          "args": [
+            "tests/validate.mjs",
+            "--task",
+            "release-and-pages"
+          ]
+        }
+      ],
+      "passes": true,
+      "attempts": 1,
+      "lastFailure": null,
+      "completedAt": "2026-07-06T13:04:48.000Z",
+      "commit": "8ba6bbb"
+    }
+  ]
+}

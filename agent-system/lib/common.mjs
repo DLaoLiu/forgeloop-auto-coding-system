@@ -229,6 +229,7 @@ export async function runCodex({
     cwd: workspace,
     stdoutFile,
     stderrFile,
+    echo: false,
   });
 }
 
